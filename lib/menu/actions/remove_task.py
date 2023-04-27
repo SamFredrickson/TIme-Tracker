@@ -1,12 +1,14 @@
 from collections import OrderedDict
 from menu.actions.action import Action
 from database.models.task import Task
+from database.models.tags import Tags
 from rich.prompt import Prompt
 
 class RemoveTask(Action):
     def __init__(self, menu) -> None:
         self.__menu = menu
         self.__task = Task()
+        self.__tags = Tags()
 
     def ask(self):
         id = Prompt.ask('Task id', default=None)
@@ -26,6 +28,7 @@ class RemoveTask(Action):
            self.__menu.call_action(item)
 
        self.__task.delete(int(data['id']))
+       self.__tags.deleteByTaskId(int(data['id']))
        self.__menu.render()
        item = self.__menu.ask_for_choice()
        self.__menu.call_action(item)

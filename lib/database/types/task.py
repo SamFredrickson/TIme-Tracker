@@ -9,7 +9,8 @@ class Task:
         start: str, 
         date_created: str, 
         description=None, 
-        end=None
+        end=None,
+        tags=None
     ) -> None:
         self.__id = id
         self.__name = name
@@ -17,6 +18,7 @@ class Task:
         self.__date_created = date_created
         self.__description = description
         self.__end = end
+        self.__tags = tags
 
     @property
     def id(self):
@@ -41,6 +43,10 @@ class Task:
     @property
     def end(self):
         return self.__end
+
+    @property
+    def tags(self):
+        return self.__tags
 
     @property
     def difference(self):

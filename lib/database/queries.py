@@ -9,4 +9,12 @@ migrations = [
             date_created DATE DEFAULT CURRENT_DATE
     )
     ''',
+    '''
+        CREATE TABLE IF NOT EXISTS tags (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            taskId INTEGER,
+            name VARCHAR(30) NOT NULL,
+            FOREIGN KEY (taskId) REFERENCES tasks(id)
+    )
+    ''',
 ]

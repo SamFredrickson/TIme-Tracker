@@ -6,7 +6,7 @@ class Database:
     def __init__(self) -> None:
         home = os.path.join(os.path.expanduser('~'), '.local', 'share')
         database_dir = os.path.join(home, 'tracker')
-        name = 'dev.db'
+        name = 'prod.db'
 
         if not os.path.exists(database_dir):
             os.makedirs(database_dir, 0o744)

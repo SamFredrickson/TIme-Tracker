@@ -1,5 +1,6 @@
 from menu.actions.action import Action
 from database.models.task import Task
+from database.models.tags import Tags
 from rich.prompt import Confirm
 from rich import print
 
@@ -7,6 +8,7 @@ class DeleteTask(Action):
     def __init__(self, menu) -> None:
         self.__menu = menu
         self.__task = Task()
+        self.__tags = Tags()
         self.__name = "delete"
 
     # def do(self, id: int):
@@ -21,6 +23,7 @@ class DeleteTask(Action):
         sure = Confirm.ask('Are you sure?')
         if sure:
             self.__task.delete(id)
+            self.__tags.deleteByTaskId(id)
             self.__menu.success('Task successfully deleted')
 
     @property

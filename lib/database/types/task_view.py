@@ -1,13 +1,14 @@
 from utils.date import get_formatted_difference
 
 class TaskViewType:
-    def __init__(self, id, name, start, end, description, date_created) -> None:
+    def __init__(self, id, name, start, end, description, date_created, tags) -> None:
         self.__id = id
         self.__name = name
         self.__start = start
         self.__end = end
         self.__description = description
         self.__date_created = date_created
+        self.__tags = tags
 
     @property
     def id(self):
@@ -35,6 +36,12 @@ class TaskViewType:
         return f'[b][grey24]Description: {self.__description}[/grey24][/b]\n'
 
     @property
+    def tags(self):
+        if len(self.__tags) == 0:
+            self.__tags = '——'
+        return f'[b][grey24]Tags: {self.__tags}[/grey24][/b]'
+
+    @property
     def date_created(self):
         return f'[b][white]Created:[/white] [green]{self.__date_created}[/green][/b]'
 
@@ -53,5 +60,6 @@ class TaskViewType:
             self.end,
             self.date_created,
             self.total,
+            self.tags,
             self.description,
         ]

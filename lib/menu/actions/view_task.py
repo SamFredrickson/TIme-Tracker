@@ -4,6 +4,7 @@ from menu.actions.update_task import UpdateTask
 from database.types.task import Task as TaskType
 from database.types.task_view import TaskViewType
 from database.models.task import Task
+from database.models.tags import Tags
 from rich import print
 from rich.console import Console
 from rich.prompt import Prompt
@@ -14,11 +15,20 @@ class ViewTask(Action):
         self.__menu = menu
         self.__view_menu = ViewMenu(previous=previous)
         self.__task = Task()
+        self.__tags = Tags()
         self.__previous = previous
         self.__console = Console()
 
     def get_formatted_list(self, task: TaskType):
-        return TaskViewType(task.id, task.name, task.start, task.end, task.description, task.date_created).get_props()
+        return TaskViewType(
+            task.id, 
+            task.name, 
+            task.start, 
+            task.end, 
+            task.description, 
+            task.date_created,
+            task.tags
+        ).get_props()
 
     def cli_do(self, id: int):
         task = self.__task.get_by_id(id)
@@ -38,6 +48,7 @@ class ViewTask(Action):
                 sure = Confirm.ask('Are you sure?')
                 if sure:
                     self.__task.delete(id)
+                    self.__tags.deleteByTaskId(id)
 
                 self.__previous.render()
                 item = self.__previous.ask_for_choice()
@@ -72,6 +83,7 @@ class ViewTask(Action):
                 
                 if sure:
                     self.__task.delete(id)
+                    self.__tags.deleteByTaskId(id)
 
                 self.__previous.render()
                 item = self.__previous.ask_for_choice()

@@ -12,7 +12,7 @@ class AddTask(Action):
         self.__menu = menu
         self.__task = Task()
 
-    def validate_and_get(self, date, name, start, end, description):
+    def validate_and_get(self, date, name, start, end, description, tags):
         validated_date = validate_date_pattern(date)
         validated_start = validate_date_pattern(start, r'\d\d:\d\d:\d\d')
 
@@ -36,17 +36,24 @@ class AddTask(Action):
         
         start = f'{date} {start}'
 
-        return OrderedDict([('name', name), ('start', start), ('end', end), ('description', description), ('date', date)])
+        if tags is not None:
+            tags = list(filter(lambda tag: tag != '', tags.split(',')))
+            if len(tags) == 0:
+                self.__menu.warn('Tags list is empty. Example: cool, task, mytag')
+                return False
 
-    def do_cli(self, date, name, start, end, description):
-        data = self.validate_and_get(date, name, start, end, description)
+        return OrderedDict([('name', name), ('start', start), ('end', end), ('description', description), ('date', date), ('tags', tags)])
+
+    def do_cli(self, date, name, start, end, description, tags):
+        data = self.validate_and_get(date, name, start, end, description, tags)
         if data:
             id = self.__task.add(
                 name=data['name'], 
                 start=data['start'], 
                 end=data['end'], 
                 description=data['description'],
-                date_created=date
+                date_created=date,
+                tags=data['tags']
             )
             return id
         return False
@@ -57,6 +64,7 @@ class AddTask(Action):
         name = Prompt.ask('Task name', default=None)
         start = Prompt.ask('Task started', default=datetime.now().strftime( get_time_pattern() )) 
         end = Prompt.ask('Task ended', default=None)
+        tags = Prompt.ask('Tags', default=None)
         description = Prompt.ask('Description', default=None)
 
         validated_date = validate_date_pattern(date)
@@ -82,12 +90,26 @@ class AddTask(Action):
         
         start = f'{date} {start}'
 
-        return OrderedDict([('name', name), ('start', start), ('end', end), ('description', description), ('date', date)])
+        if tags is not None:
+            tags = tags.split(',')
+            tags = list(filter(lambda tag: tag != '', tags))
+            if len(tags) == 0:
+                self.__menu.warn('Tags list is empty. Example: cool, task, mytag')
+                return self.ask_and_validate()
+
+        return OrderedDict([('name', name), ('start', start), ('end', end), ('description', description), ('date', date), ('tags', tags)])
 
     def do(self):
        data = self.ask_and_validate()
 
-       self.__task.add(data['name'], data['start'], data['end'], data['description'])
+       self.__task.add(
+           name=data['name'], 
+           start=data['start'], 
+           end=data['end'], 
+           description=data['description'],
+           tags=data['tags']
+        )
+
        self.__menu.render()
        item = self.__menu.ask_for_choice()
        self.__menu.call_action(item)
