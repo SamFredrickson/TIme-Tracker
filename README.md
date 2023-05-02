@@ -1,7 +1,7 @@
-BOND
+About
 =================
 
-BOND is a simple time tracker console application. It handles tasks creation,
+This simple console application is created to track work-time. It handles tasks creation,
 editing, deleliton, showing and exporting.
 
 Design Principles
@@ -100,7 +100,8 @@ You will be asked to fill fields below consistently
 2. Task name (required)
 3. Task started (required)
 4. Task ended (optional)
-5. Description (optional)
+5. Tags (optional)
+6. Description (optional)
 
 **WARNING! Cyan values in parentheses are default values and you dont need to copy them**
 
@@ -119,6 +120,10 @@ By default, Task started is current time of your computer system. If you want to
 *Task ended*
 
 Task ended is time you finish task, it's optional and you can leave it empty. In case you forgot to create a task you can enter time in proper format (03:00:00).
+
+*Tags*
+
+Tags are literally a couple of words about the task you create. It might be used in task-export command to export tasks which include these tags.
 
 *Description*
 
@@ -226,7 +231,8 @@ If you choose to update task you will be asked to fill fields:
 2. Task name (optional)
 3. Task started (optional)
 4. Task ended (optional)
-5. Description (optional)
+5. Tags (optional)
+6. Description (optional)
 
 All fields are optional because they're already filled.
 
@@ -236,7 +242,7 @@ Let's look at the final result:
 
 During updating you can see these two tips on the screen
 
-In my case, task is running and  dont have task ended value by default, so i choose "now" to finish task with current system time. 
+In my case, the task is running and that's why we don't see default value next to "Task ended:" option. Type "now" to finish a task with current system time.
 
 If you wish you can enter time in proper format (15:00:00) instead of "now" or "-".
 
@@ -315,4 +321,4 @@ Use console commands and CTRL + C combinations for better experience.
 Authors
 =======
 
-BOND was created by `Sam Fredrickson <https://github.com/samFredrickson/>`
+The console application was created by `Sam Fredrickson <https://github.com/samFredrickson/>`
