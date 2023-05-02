@@ -57,7 +57,7 @@ class Task(Model):
     def get_tasks_for_html(
         self,
         date_range: DateRange,
-        name=None
+        tags=None
     ):
         task_list = []
         execute_fields = (
@@ -66,18 +66,26 @@ class Task(Model):
         )
 
         query = f'''
-               SELECT * FROM tasks 
-               WHERE date_created >= ?
-               AND date_created <= ?
+               SELECT 
+                     DISTINCT task.id, task.name, task.start, task.end, task.description, task.date_created 
+               FROM tasks task
+                    JOIN tags tag ON tag.taskId = task.id
+                    WHERE (task.date_created >= ?
+               AND task.date_created <= ?)
             '''
 
-        if name is not None:
-            query += ' AND name = ?'
-            execute_fields = (
+        if tags is not None:
+            tags = tags.split(',')
+            length = len(tags)
+            marks = generateQuestionMarksForIn(length=length)
+            query += ' AND tag.name in ' + marks
+
+            execute_fields = [
                 date_range.date_from,
                 date_range.date_to,
-                name
-            )
+            ]
+
+            execute_fields += [tag.strip() for tag in tags]
 
         self.__cursor.execute(query, execute_fields)
         self.__connnection.commit()
@@ -101,7 +109,6 @@ class Task(Model):
     def get_tasks_for_csv(
         self,
         date_range: DateRange,
-        name=None,
         tags=None
     ):
         task_list = []

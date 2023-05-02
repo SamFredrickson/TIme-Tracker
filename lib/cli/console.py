@@ -157,7 +157,6 @@ def task_export(
 
         tasks = task.get_tasks_for_csv(
             date_range=date_range, 
-            name=name, 
             tags=tags
         )
         
@@ -169,7 +168,6 @@ def task_export(
 
         tasks = task.get_tasks_for_csv(
             date_range=date_range, 
-            name=name, 
             tags=tags
         )
         
@@ -179,7 +177,7 @@ def task_export(
         task = Task()
         html_exporter = HtmlExporter()
 
-        tasks = task.get_tasks_for_html(date_range=date_range, name=name)
+        tasks = task.get_tasks_for_html(date_range=date_range, tags=tags)
         name = html_exporter.write(tasks=tasks)
 
     main_menu.success(f'Tasks successully exported to {export_dir}/{name}')
