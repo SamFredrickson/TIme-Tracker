@@ -137,7 +137,6 @@ def task_export(
         get_year_pattern()), help="Date from, default today"),
     date_to: str = typer.Option(datetime.now().strftime(
         get_year_pattern()), help="Date to, default today"),
-    name: str = typer.Option(None, help="Task name"),
     type: str = typer.Option('excel', help="File format (csv, html, excel)"),
     tags: str = typer.Option(None, help="Tags")
 ):
