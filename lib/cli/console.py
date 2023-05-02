@@ -7,6 +7,7 @@ from menu.actions.show_tasks import ShowTasks
 from database.types.date_range import DateRange
 from export.csv_exporter import CsvExporter
 from export.html_exporter import HtmlExporter
+from export.excel_exporter import ExcelExporter
 from utils.date import get_time_pattern, get_year_pattern, validate_date_pattern
 
 from tracker.release import __app_name__, __version__
@@ -137,7 +138,7 @@ def task_export(
     date_to: str = typer.Option(datetime.now().strftime(
         get_year_pattern()), help="Date to, default today"),
     name: str = typer.Option(None, help="Task name"),
-    type: str = typer.Option('csv', help="File format (csv, html)"),
+    type: str = typer.Option('excel', help="File format (csv, html, excel)"),
     tags: str = typer.Option(None, help="Tags")
 ):
     main_menu = Main()
@@ -162,6 +163,18 @@ def task_export(
         )
         
         name = csv_exporter.write(fieldnames=tasks['fieldnames'], data=tasks['data'])
+    
+    if type == 'excel':
+        task = Task()
+        excel_exporter = ExcelExporter()
+
+        tasks = task.get_tasks_for_csv(
+            date_range=date_range, 
+            name=name, 
+            tags=tags
+        )
+        
+        name = excel_exporter.write(fieldnames=tasks['fieldnames'], data=tasks['data'])
 
     if type == 'html':
         task = Task()

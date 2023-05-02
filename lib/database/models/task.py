@@ -112,7 +112,7 @@ class Task(Model):
 
         query = f'''
                SELECT 
-                     DISTINCT task.id, task.name, task.start, task.end, task.date_created, task.description 
+                     DISTINCT task.id, task.name, task.start, task.end, task.description, task.date_created 
                FROM tasks task
                     JOIN tags tag ON tag.taskId = task.id
                     WHERE (task.date_created >= ?
