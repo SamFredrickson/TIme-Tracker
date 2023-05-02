@@ -125,8 +125,6 @@ class Task(Model):
             marks = generateQuestionMarksForIn(length=length)
             query += ' AND tag.name in ' + marks
 
-            print(marks)
-
             execute_fields = [
                 date_range.date_from,
                 date_range.date_to,
