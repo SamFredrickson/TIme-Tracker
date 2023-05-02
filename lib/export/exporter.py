@@ -1,15 +1,14 @@
 import os
 from datetime import datetime
+from tracker.constants import export_dir
 
 class Exporter:
     folder_name = 'export'
     format = 'csv'
-    home = os.path.join(os.path.expanduser('~'), '.local', 'share')
-    export_dir = os.path.join(home, 'tracker', 'export')
 
     def __init__(self) -> None:
-        if not os.path.exists(self.export_dir):
-            os.makedirs(self.export_dir, 0o744)
+        if not os.path.exists(export_dir):
+            os.makedirs(export_dir, 0o744)
 
     def generate_name(self):
         '''generate name for future file in export folder'''

@@ -1,10 +1,10 @@
 from typing import List
 from utils.date import get_difference, get_formatted_total
 from .exporter import Exporter
-from datetime import datetime
 from database.types.task import Task as TaskType
 from .templates.content import content
 from .templates.main import main
+from tracker.constants import export_dir
 
 class HtmlExporter(Exporter):
     format = 'html'
@@ -50,5 +50,7 @@ class HtmlExporter(Exporter):
             content=content_concatinated,
         )
 
-        with open(f'{self.export_dir}/{name}', 'wt') as file:
+        with open(f'{export_dir}/{name}', 'wt') as file:
             file.write(template_formatted)
+        
+        return name

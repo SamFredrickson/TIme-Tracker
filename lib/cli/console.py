@@ -9,10 +9,8 @@ from export.csv_exporter import CsvExporter
 from export.html_exporter import HtmlExporter
 from utils.date import get_time_pattern, get_year_pattern, validate_date_pattern
 
-from rich.prompt import Prompt
-from rich.prompt import Confirm
-
 from tracker.release import __app_name__, __version__
+from tracker.constants import export_dir
 from menu.main import Main
 from menu.tasks import TasksMenu
 from menu.actions.show_tasks import ShowTasks
@@ -163,17 +161,16 @@ def task_export(
             tags=tags
         )
         
-        csv_exporter.write(fieldnames=tasks['fieldnames'], data=tasks['data'])
+        name = csv_exporter.write(fieldnames=tasks['fieldnames'], data=tasks['data'])
 
     if type == 'html':
         task = Task()
         html_exporter = HtmlExporter()
 
         tasks = task.get_tasks_for_html(date_range=date_range, name=name)
-        html_exporter.write(tasks=tasks)
+        name = html_exporter.write(tasks=tasks)
 
-    home = os.path.join(os.path.expanduser('~'), '.local', 'share')
-    main_menu.success(f'Tasks successully exported to {home}')
+    main_menu.success(f'Tasks successully exported to {export_dir}/{name}')
 
 
 def _version_callback(value: bool) -> None:

@@ -1,7 +1,7 @@
 from typing import Dict, List
-from .exporter import Exporter
-from datetime import datetime
 import csv
+from .exporter import Exporter
+from tracker.constants import export_dir
 
 class CsvExporter(Exporter):
     def __init__(self) -> None:
@@ -10,7 +10,9 @@ class CsvExporter(Exporter):
     def write(self, fieldnames=List[str], data=Dict):
         name = self.generate_name()
         
-        with open(f'{self.export_dir}/{name}', 'wt') as file:
+        with open(f'{export_dir}/{name}', 'wt') as file:
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(data)
+            
+        return name
